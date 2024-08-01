@@ -81,3 +81,13 @@ def create(request):
     new_post.save()
 
     return JsonResponse({"message": "Post submitted successfully."}, status=201)
+
+# get all posts in reverse chronological order
+def posts(request):
+    #Get all posts
+    posts = Post.objects.all()
+
+    #get most recent posts first
+    posts = posts.order_by("-timestamp").all()
+
+    return JsonResponse([posts.serialize() for post in posts], safe=False)
