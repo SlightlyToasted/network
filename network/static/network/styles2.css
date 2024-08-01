@@ -1,0 +1,16 @@
+#new-post > * {
+    display: block;
+    margin: 10px; 
+}
+
+#all-posts{
+    margin: 10px;
+}
+
+#post-container{
+    align-items: center;
+    border: 1px solid black;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}

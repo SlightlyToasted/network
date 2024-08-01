@@ -4,9 +4,9 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
-
 from .models import User, Post
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
 
 
 
@@ -90,4 +90,4 @@ def posts(request):
     #get most recent posts first
     posts = posts.order_by("-timestamp").all()
 
-    return JsonResponse([posts.serialize() for post in posts], safe=False)
+    return JsonResponse([post.serialize() for post in posts], safe=False)

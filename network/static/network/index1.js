@@ -31,10 +31,10 @@ function load_view(view) {
                 const timestamp = document.createElement('p');
                 const likes = document.createElement('p');
 
-                username.innerHTML = posts.user["username"];
+                username.innerHTML = posts.user;
                 content.innerHTML = posts.content;
                 timestamp.innerHTML = posts.timestamp;
-                likes.innerHTML = 0;
+                likes.innerHTML = "0 likes";
 
                 post_container.setAttribute("id", "post-container");
 
