@@ -91,3 +91,7 @@ def posts(request):
     posts = posts.order_by("-timestamp").all()
 
     return JsonResponse([post.serialize() for post in posts], safe=False)
+
+
+def user(request, username):
+    return render(request, 'user.html')
