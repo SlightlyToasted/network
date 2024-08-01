@@ -1,0 +1,8 @@
+#new-post{
+    display: flex;
+    align-items: center;
+}
+
+#new-post > *:nth-child(1) {
+    margin-right: 20px; /* Adjust the margin as needed */
+}

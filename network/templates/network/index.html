@@ -1,0 +1,23 @@
+{% extends "network/layout.html" %}
+{% load static %}
+
+{% block body %}
+    <button id="all-posts-btn" class="btn btn-sm btn-outline-primary">All Posts</button>
+    <button id="new-post-btn" class="btn btn-sm btn-outline-primary">Create</button>
+
+    <div id="all-posts">
+        <h1>All Posts</h1>
+    </div>
+
+
+    <form id="new-post">
+        <textarea id="post-body"></textarea>
+    </form>
+    <button id="create" class="btn btn-sm btn-outline-secondary">Submit</button>
+
+    
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'network/index.js' %}"></script>
+{% endblock %}
