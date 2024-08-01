@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
+   
 
     // Use buttons to toggle between views
     document.querySelector('#all-posts-btn').addEventListener('click', () => load_view("all"));
@@ -26,7 +27,7 @@ function load_view(view) {
             posts.forEach(posts => {
                 //create elements
                 const post_container = document.createElement('div');
-                const username = document.createElement('p');
+                const username = document.createElement('a');
                 const content = document.createElement('p');
                 const timestamp = document.createElement('p');
                 const likes = document.createElement('p');
@@ -37,6 +38,7 @@ function load_view(view) {
                 likes.innerHTML = "0 likes";
 
                 post_container.setAttribute("id", "post-container");
+                username.setAttribute("href", `users/${posts.user}`);
 
                 document.querySelector('#all-posts').append(post_container);
                 post_container.append(username);

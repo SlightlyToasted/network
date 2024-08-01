@@ -2,7 +2,7 @@ import json
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse
 from .models import User, Post
 from django.views.decorators.csrf import csrf_exempt
@@ -94,4 +94,40 @@ def posts(request):
 
 
 def user(request, username):
-    return render(request, 'user.html')
+    #find user by username
+    user_data = User.objects.filter(username=username)[0]
+    posts = Post.objects.filter(user=user_data)
+    posts = posts.order_by("-timestamp").all()
+
+    #check if user is self
+    if request.user.id == user_data.id:
+        #if same user
+        not_user = False
+        is_following = None
+    else:
+        not_user = True
+        #check if user is following 
+        is_following = request.user.following.filter(id=user_data.id).exists()
+
+    return render(request, 'network/user.html', {
+        "user": user_data,
+        "username": user_data.username,
+        "followers": user_data.followers.count(),
+        "following": user_data.following.count(),
+        "posts": posts,
+        "not_user": not_user,
+        "is_following": is_following,
+
+    })
+
+def follow(request, user_id):
+     # Finding watchers based on the id
+    user = User.objects.get(id=user_id)
+    request.user.following.add(user)
+    return redirect('user', user.username)
+
+def unfollow(request, user_id):
+    # Finding watchers based on the id
+    user = User.objects.get(id=user_id)
+    request.user.following.remove(user)
+    return redirect('user', user.username)
