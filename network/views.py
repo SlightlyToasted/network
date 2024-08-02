@@ -7,6 +7,7 @@ from django.urls import reverse
 from .models import User, Post
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 
 
 
@@ -93,11 +94,13 @@ def posts(request):
     return JsonResponse([post.serialize() for post in posts], safe=False)
 
 
-def user(request, username):
+def user(request, username, page_num):
     #find user by username
     user_data = User.objects.filter(username=username)[0]
     posts = Post.objects.filter(user=user_data)
     posts = posts.order_by("-timestamp").all()
+    p = Paginator(posts, 5)
+    page_obj = p.get_page(page_num)
 
     #check if user is self
     if request.user.id == user_data.id:
@@ -107,35 +110,63 @@ def user(request, username):
     else:
         not_user = True
         #check if user is following 
-        is_following = request.user.following.filter(id=user_data.id).exists()
+        is_following = request.user.followers.filter(id=user_data.id).exists()
+
+
+    #deal with prev page
+    prev_page = None
+    has_prev_page = False
+    if page_obj.has_previous():
+        prev_page = page_obj.previous_page_number()
+        has_prev_page = True
+
+    #deal with next page
+    next_page = None
+    has_next_page = False
+    if page_obj.has_next():
+        next_page = page_obj.next_page_number()
+        has_next_page = True
+
 
     return render(request, 'network/user.html', {
         "user": user_data,
         "username": user_data.username,
         "followers": user_data.followers.count(),
         "following": user_data.following.count(),
-        "posts": posts,
+        "posts": page_obj,
         "not_user": not_user,
         "is_following": is_following,
+        "pages": p,
+        "has_prev_page": has_prev_page,
+        "prev_page": prev_page,
+        "has_next_page": has_next_page,
+        "next_page": next_page,
 
     })
 
 def follow(request, user_id):
-     # Finding watchers based on the id
-    user = User.objects.get(id=user_id)
-    request.user.following.add(user)
-    return redirect('user', user.username)
+     # Finding followers based on the id
+    
+    user_to_follow = User.objects.get(id=user_id)
+    print(user_to_follow)
+    print(user_to_follow.followers.filter(id=user_to_follow.id).exists())
+    user_to_follow.followers.add(request.user)
+
+    print(user_to_follow.followers.filter(id=user_to_follow.id).exists())
+    return redirect('user', user_to_follow.username)
 
 def unfollow(request, user_id):
     # Finding watchers based on the id
-    user = User.objects.get(id=user_id)
-    request.user.following.remove(user)
-    return redirect('user', user.username)
+    user_to_unfollow = User.objects.get(id=user_id)
+    user_to_unfollow.followers.remove(request.user)
+    return redirect('user', user_to_unfollow.username)
 
 
 def following(request):
-    following = User.objects.get(followers=request.user)
-    following_posts = following.posts
-    return render(request, 'following.html', {
-        "posts": following_posts,
+    following = User.objects.filter(followers=request.user)
+    following = Post.objects.filter(user__in=following)
+    posts = following.order_by("-timestamp").all() 
+    return render(request, 'network/following.html', {
+        "username":request.user,
+        "posts": posts,
     })
