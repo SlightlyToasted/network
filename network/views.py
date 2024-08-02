@@ -131,3 +131,11 @@ def unfollow(request, user_id):
     user = User.objects.get(id=user_id)
     request.user.following.remove(user)
     return redirect('user', user.username)
+
+
+def following(request):
+    following = User.objects.get(followers=request.user)
+    following_posts = following.posts
+    return render(request, 'following.html', {
+        "posts": following_posts,
+    })

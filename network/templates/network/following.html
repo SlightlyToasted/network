@@ -1,0 +1,41 @@
+{% extends "network/layout.html" %}
+{% load static %}
+
+{% block title %}{{ username }}{% endblock %}
+
+{% block body %}
+    <h1>{{ username }}</h1>
+    <b>Followers:</b> {{ followers }} <br>
+    <b>Following:</b> {{ following }}
+
+    <h2>Posts</h2>
+    {% for post in posts %}
+    <div id="post-container">
+        <b>{{ username }}</b> <br>
+        {{ post.content }} <br>
+        {{ post.timestamp }} <br>
+        {{ post.likes }} <br>
+    </div>
+    {% endfor %}
+    <br>
+
+    <div class="button-container">
+        {% if not_user %}
+            {% if is_following %}
+                <form action="{% url 'unfollow' user.id %}" method="post">
+                    {% csrf_token %}
+                    <input type="submit" value="Unfollow" class="top-btn">
+                </form>
+            {% else %}
+                <form action="{% url 'follow' user.id %}" method="post" class="top-btn">
+                    {% csrf_token %}
+                    <input class="top-btn" type="submit" value="Follow">
+                </form>
+            {% endif %}
+        {% endif %}
+    </div>
+
+
+{% endblock %}
+
+
