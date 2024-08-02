@@ -12,7 +12,39 @@ from django.core.paginator import Paginator
 
 
 def index(request):
-    return render(request, "network/index.html")
+    return redirect('all_posts', 1)
+
+def all_posts(request, page_num):
+    posts = Post.objects.all()
+    posts = posts.order_by("-timestamp").all() 
+
+    #create paginator object
+    p = Paginator(posts, 5)
+    page_obj = p.get_page(page_num)
+
+    #deal with prev page
+    prev_page = None
+    has_prev_page = False
+    if page_obj.has_previous():
+        prev_page = page_obj.previous_page_number()
+        has_prev_page = True
+
+    #deal with next page
+    next_page = None
+    has_next_page = False
+    if page_obj.has_next():
+        next_page = page_obj.next_page_number()
+        has_next_page = True
+
+    return render(request, 'network/all.html', {
+        "username":request.user,
+        "posts": page_obj,
+        "pages": p,
+        "prev_page": prev_page,
+        "has_prev_page": has_prev_page,
+        "next_page": next_page,
+        "has_next_page": has_next_page,
+    })
 
 
 
