@@ -38,7 +38,7 @@ function load_view(view) {
                 likes.innerHTML = "0 likes";
 
                 post_container.setAttribute("id", "post-container");
-                username.setAttribute("href", `users/${posts.user}`);
+                username.setAttribute("href", `users/${posts.user}/page1`);
 
                 document.querySelector('#all-posts').append(post_container);
                 post_container.append(username);

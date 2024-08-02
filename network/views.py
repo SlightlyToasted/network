@@ -99,8 +99,6 @@ def user(request, username, page_num):
     user_data = User.objects.filter(username=username)[0]
     posts = Post.objects.filter(user=user_data)
     posts = posts.order_by("-timestamp").all()
-    p = Paginator(posts, 5)
-    page_obj = p.get_page(page_num)
 
     #check if user is self
     if request.user.id == user_data.id:
@@ -112,6 +110,9 @@ def user(request, username, page_num):
         #check if user is following 
         is_following = request.user.followers.filter(id=user_data.id).exists()
 
+    #Paginator stuff
+    p = Paginator(posts, 5)
+    page_obj = p.get_page(page_num)
 
     #deal with prev page
     prev_page = None
@@ -129,7 +130,7 @@ def user(request, username, page_num):
 
 
     return render(request, 'network/user.html', {
-        "user": user_data,
+        "user_data": user_data,
         "username": user_data.username,
         "followers": user_data.followers.count(),
         "following": user_data.following.count(),
@@ -153,20 +154,44 @@ def follow(request, user_id):
     user_to_follow.followers.add(request.user)
 
     print(user_to_follow.followers.filter(id=user_to_follow.id).exists())
-    return redirect('user', user_to_follow.username)
+    return redirect('user', user_to_follow.username, 1)
 
 def unfollow(request, user_id):
     # Finding watchers based on the id
     user_to_unfollow = User.objects.get(id=user_id)
     user_to_unfollow.followers.remove(request.user)
-    return redirect('user', user_to_unfollow.username)
+    return redirect('user', user_to_unfollow.username, 1)
 
 
-def following(request):
+def following(request, page_num):
     following = User.objects.filter(followers=request.user)
     following = Post.objects.filter(user__in=following)
     posts = following.order_by("-timestamp").all() 
+
+    #create paginator object
+    p = Paginator(posts, 5)
+    page_obj = p.get_page(page_num)
+
+    #deal with prev page
+    prev_page = None
+    has_prev_page = False
+    if page_obj.has_previous():
+        prev_page = page_obj.previous_page_number()
+        has_prev_page = True
+
+    #deal with next page
+    next_page = None
+    has_next_page = False
+    if page_obj.has_next():
+        next_page = page_obj.next_page_number()
+        has_next_page = True
+
     return render(request, 'network/following.html', {
         "username":request.user,
-        "posts": posts,
+        "posts": page_obj,
+        "pages": p,
+        "prev_page": prev_page,
+        "has_prev_page": has_prev_page,
+        "next_page": next_page,
+        "has_next_page": has_next_page,
     })

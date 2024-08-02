@@ -8,12 +8,12 @@
     <div class="button-container">
         {% if not_user %}
             {% if is_following %}
-                <form action="{% url 'unfollow' user.id %}" method="post">
+                <form action="{% url 'unfollow' user_data.id %}" method="post">
                     {% csrf_token %}
                     <input type="submit" value="Unfollow" class="top-btn">
                 </form>
             {% else %}
-                <form action="{% url 'follow' user.id %}" method="post" class="top-btn">
+                <form action="{% url 'follow' user_data.id %}" method="post" class="top-btn">
                     {% csrf_token %}
                     <input class="top-btn" type="submit" value="Follow">
                 </form>
