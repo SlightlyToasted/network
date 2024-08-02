@@ -1,15 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
-   
-
-    // Use buttons to toggle between views
-    document.querySelector('#all-posts-btn').addEventListener('click', () => load_view("all"));
-    document.querySelector('#new-post-btn').addEventListener('click', () => load_view("new"));
 
     //Button to create a new post
     document.querySelector('#create').addEventListener('click', create_post);
-  
-    // By default, load all posts
-    load_view("all");
+
    
   });
 
@@ -70,7 +63,7 @@ function create_post(){
     })
     .then(response => response.json())
     .then(result => {
-        console.log(result)
-        load_view("all");
+        document.querySelector('#post-body').value = "";
+        location.reload()
     });
 }

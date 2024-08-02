@@ -19,7 +19,7 @@ def all_posts(request, page_num):
     posts = posts.order_by("-timestamp").all() 
 
     #create paginator object
-    p = Paginator(posts, 5)
+    p = Paginator(posts, 10)
     page_obj = p.get_page(page_num)
 
     #deal with prev page
@@ -143,7 +143,7 @@ def user(request, username, page_num):
         is_following = request.user.followers.filter(id=user_data.id).exists()
 
     #Paginator stuff
-    p = Paginator(posts, 5)
+    p = Paginator(posts, 10)
     page_obj = p.get_page(page_num)
 
     #deal with prev page
@@ -201,7 +201,7 @@ def following(request, page_num):
     posts = following.order_by("-timestamp").all() 
 
     #create paginator object
-    p = Paginator(posts, 5)
+    p = Paginator(posts, 10)
     page_obj = p.get_page(page_num)
 
     #deal with prev page

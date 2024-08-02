@@ -4,32 +4,45 @@
 {% block title %}{{ username }}'s following{% endblock %}
 
 {% block body %}
-    <h2>All Posts</h2>
-    {% for post in posts %}
-    <div id="post-container">
-        <a href="{% url 'user' post.user.username 1 %}">{{ post.user.username }}</a><br>
-        {{ post.content }} <br>
-        {{ post.timestamp }} <br>
-        {{ post.likes }} <br>
-    </div>
-    {% endfor %}
-    <br>
+  <h1>All Posts</h1>
+  <div id="new-post">
+    <h2>New Post</h2>
+    <form id="post-form">
+        <textarea id="post-body"></textarea>
+    </form>
+    <button id="create" class="btn btn-sm btn-outline-secondary">Submit</button>
+  </div>
 
-    <nav aria-label="Page navigation example">
-        <ul class="pagination">
-            {% if has_prev_page %}
-                <li class="page-item"><a class="page-link" href="{% url 'all_posts' prev_page%}">Previous</a></li>
-            {% endif %}
-          {% for page in pages %}
-            <li class="page-item"><a class="page-link"  href="{% url 'all_posts' page.number%}">{{ page.number }}</a></li>
-          {% endfor %}
-          {% if has_next_page %}
-            <li class="page-item"><a class="page-link" href="{% url 'all_posts' next_page %}">Next</a></li>
-          {% endif  %}
-          
-        </ul>
-      </nav>
+   
+  {% for post in posts %}
+  <div id="post-container">
+      <a href="{% url 'user' post.user.username 1 %}">{{ post.user.username }}</a><br>
+      {{ post.content }} <br>
+      {{ post.timestamp }} <br>
+      {{ post.likes }} <br>
+  </div>
+  {% endfor %}
+  <br>
 
+  <nav aria-label="Page navigation example">
+    <ul class="pagination">
+        {% if has_prev_page %}
+            <li class="page-item"><a class="page-link" href="{% url 'all_posts' prev_page%}">Previous</a></li>
+        {% endif %}
+      {% for page in pages %}
+        <li class="page-item"><a class="page-link"  href="{% url 'all_posts' page.number%}">{{ page.number }}</a></li>
+      {% endfor %}
+      {% if has_next_page %}
+        <li class="page-item"><a class="page-link" href="{% url 'all_posts' next_page %}">Next</a></li>
+      {% endif  %}
+      
+    </ul>
+  </nav>
+
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'network/index4.js' %}"></script>
 {% endblock %}
 
 
