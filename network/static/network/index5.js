@@ -68,6 +68,8 @@ function create_post(){
     });
 }
 
-function edit_post(){
-    alert()
+function edit_post(post_id){
+    document.querySelector("#content-15").style.display = 'none';
+    //document.querySelector(`edit-textarea-${post_id}`).style.display = 'block';
+
 }

@@ -16,8 +16,13 @@
    
   {% for post in posts %}
   <div id="post-container">
-      <a href="{% url 'user' post.user.username 1 %}">{{ post.user.username }}</a><br>
-      {{ post.content }} <br>
+      <a href="{% url 'user' post.user.username 1 %}">{{ post.user.username }}</a>
+      {% if post.user == username %}
+        <br><button id="edit-link-{{ post.id }}" class="edit-link" onclick="edit_post({{ post.id }})">Edit</button>
+      {% endif %}
+
+      <div id="content-{{ post.id }}">{{ post.content }}</div>
+      <textarea id="textarea-{{ post.id }}" style="display: none;">{{ post.content }}</textarea>
       {{ post.timestamp }} <br>
       {{ post.likes }} <br>
   </div>
@@ -42,7 +47,7 @@
 {% endblock %}
 
 {% block script %}
-    <script src="{% static 'network/index4.js' %}"></script>
+    <script src="{% static 'network/index6.js' %}"></script>
 {% endblock %}
 
 
