@@ -5,13 +5,15 @@
 
 {% block body %}
   <h1>All Posts</h1>
-  <div id="new-post">
-    <h3>New Post</h3>
-    <form id="post-form">
-        <textarea id="post-body"></textarea>
-    </form>
-    <button id="create" class="btn btn-sm btn-outline-secondary">Post</button>
-  </div>
+  {% if user.is_authenticated %}
+    <div id="new-post">
+      <h3>New Post</h3>
+      <form id="post-form">
+          <textarea id="post-body"></textarea>
+      </form>
+      <button id="create" class="btn btn-sm btn-outline-secondary">Post</button>
+    </div>
+  {% endif %}
 
    
   {% for post in posts %}
