@@ -6,25 +6,30 @@
 {% block body %}
   <h1>All Posts</h1>
   <div id="new-post">
-    <h2>New Post</h2>
+    <h3>New Post</h3>
     <form id="post-form">
         <textarea id="post-body"></textarea>
     </form>
-    <button id="create" class="btn btn-sm btn-outline-secondary">Submit</button>
+    <button id="create" class="btn btn-sm btn-outline-secondary">Post</button>
   </div>
 
    
   {% for post in posts %}
   <div id="post-container">
-      <a href="{% url 'user' post.user.username 1 %}">{{ post.user.username }}</a>
+      <a href="{% url 'user' post.user.username 1 %}" class="username-link">{{ post.user.username }}</a>
       {% if post.user == username %}
         <br><button id="edit-link-{{ post.id }}" class="edit-link" onclick="edit_post({{ post.id }})">Edit</button>
       {% endif %}
 
       <div id="content-{{ post.id }}">{{ post.content }}</div>
-      <textarea id="textarea-{{ post.id }}" style="display: none;">{{ post.content }}</textarea>
+
+      <div id="textarea-container-{{ post.id }}" style="display: none;">
+        <textarea id="textarea-{{ post.id }}">{{ post.content }}</textarea>
+        <button onclick="save_post({{ post.id }})">Submit</button>
+      </div>
+      
       {{ post.timestamp }} <br>
-      {{ post.likes }} <br>
+      <button id="like-{{ post.id }}" onclick="toggle_like({{ post.id }})" class="like-btn">♥ {{ post.likes_users.count }}</button>
   </div>
   {% endfor %}
   <br>
@@ -47,7 +52,7 @@
 {% endblock %}
 
 {% block script %}
-    <script src="{% static 'network/index6.js' %}"></script>
+    <script src="{% static 'network/index7.js' %}"></script>
 {% endblock %}
 
 

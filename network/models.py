@@ -14,6 +14,7 @@ class Post(models.Model):
     content = models.TextField(blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     likes = models.IntegerField(default=0)
+    likes_users = models.ManyToManyField("User", related_name="likes", null=True)
     
     def __str__(self):
         return f"Post {self.id} from {self.user} at {self.timestamp}"
@@ -24,5 +25,5 @@ class Post(models.Model):
             "user": self.user.username,
             "content": self.content,
             "timestamp": self.timestamp.strftime("%b %d %Y, %I:%M %p"),
-            "likes": self.likes
+            "likes": self.likes_user.count()
         }

@@ -68,6 +68,69 @@ function create_post(){
     });
 }
 
-function edit_post(){
-    alert()
+function edit_post(post_id){
+    document.querySelector(`#edit-link-${post_id}`).style.display = 'none';
+    document.querySelector(`#content-${post_id}`).style.display = 'none';
+    document.querySelector(`#textarea-container-${post_id}`).style.display = 'block';
+
+}
+
+function save_post(post_id){
+    console.log(post_id);
+    //update content
+    new_content = document.querySelector(`#textarea-${post_id}`).value;
+    document.querySelector(`#content-${post_id}`).innerHTML = new_content;
+    document.querySelector(`#textarea-${post_id}`).value='';
+
+    //change display settings
+    document.querySelector(`#edit-link-${post_id}`).style.display = 'block';
+    document.querySelector(`#content-${post_id}`).style.display = 'block';
+    document.querySelector(`#textarea-container-${post_id}`).style.display = 'none';
+
+    //update post
+    fetch(`/posts/update/${post_id}`, {
+    method: 'PUT',
+    body: JSON.stringify({
+        content: new_content,
+        })
+    })
+    .then(response => {
+        console.log(response)
+    })
+     
+   
+}
+
+function toggle_like(post_id){
+    liking = true;
+    //check if already liked
+    fetch(`/posts/likes/${post_id}`, {
+        method: 'PUT',
+        body: JSON.stringify({})
+
+    })
+    .then(response => response.json())
+    .then(result => {
+        console.log(result);
+        if (result.message == 'like') {
+            console.log('Post liked');
+            liking = true;
+        } else if (result.message == 'unlike') {
+            console.log('Post unliked');
+            liking = false;
+        }
+
+        count = parseInt(document.querySelector(`#like-${post_id}`).innerHTML.slice(1));
+        if (liking) {
+            count += 1;
+            document.querySelector(`#like-${post_id}`).innerHTML = "♥ " + count;
+        }
+        else {
+            count -= 1;
+            document.querySelector(`#like-${post_id}`).innerHTML = "♥ " + count;
+        }
+    })
+    
+    
+    
 }

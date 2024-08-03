@@ -1,0 +1,71 @@
+.body{
+    margin:15px;
+}
+#new-post > * {
+    display: block;
+    margin: 10px; 
+}
+
+#all-posts{
+    margin: 10px;
+}
+
+#post-container{
+    align-items: center;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+#new-post{
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    padding:10px;
+    border-radius: 5px;
+}
+
+#post-body {
+    width: 100%; 
+    box-sizing: border-box; 
+    padding: 10px;  
+    border: 1px solid #ccc;  
+    border-radius: 4px;  
+    resize: vertical;  
+}
+
+.edit-link {
+    color:#007bff;
+    background-color: transparent;
+    border:none;
+    padding:0px;
+}
+
+.username-link {
+    color:black;
+    font-weight: bold;
+    font-size: large;
+}
+
+
+.like-btn {
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+    background-color: transparent;
+    border: 1px solid transparent;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    padding: .25rem .5rem;
+    font-size: .875rem;
+    line-height: 1.5;
+    border-radius: .2rem;
+    color: #de5877;
+    border-color: #de5877;
+}
+
+.like-btn:hover {
+    color:white;
+    background-color: #de5877;
+}

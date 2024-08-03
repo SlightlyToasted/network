@@ -227,3 +227,49 @@ def following(request, page_num):
         "next_page": next_page,
         "has_next_page": has_next_page,
     })
+
+#Update a post
+@csrf_exempt
+def update(request, post_id):
+    if request.method != "PUT":
+        return JsonResponse({"error": "PUT request required."}, status=400)
+    
+    # Query for requested post
+    try:
+        post = Post.objects.get(pk=post_id)
+    except Post.DoesNotExist:
+        return JsonResponse({"error": "Post not found."}, status=404)
+
+    data = json.loads(request.body)
+    post.content = data["content"]
+    post.save()
+    return HttpResponse(status=204)
+
+#Toggle like
+@csrf_exempt
+def toggle_like(request, post_id):
+    if request.method != "PUT":
+        return JsonResponse({"error": "PUT request required."}, status=400)
+    
+    # Query for requested post
+    try:
+        post = Post.objects.get(pk=post_id)
+    except Post.DoesNotExist:
+        return JsonResponse({"error": "Post not found."}, status=404)
+    
+    data = json.loads(request.body)
+
+    #check if user has already liked this post
+    if post.likes_users.filter(id=request.user.id).exists():
+        post.likes_users.remove(request.user)
+        post.save()
+        return JsonResponse({
+            "message": "unlike"
+            })
+    else: 
+        post.likes_users.add(request.user)
+        post.save()
+        return JsonResponse({
+            "message": "like"
+            })
+    

@@ -4,15 +4,15 @@
 {% block title %}{{ username }}'s following{% endblock %}
 
 {% block body %}
-    <h1>Post from the people you're following!</h1>
+    <h1>Post from people you're following</h1>
 
     <h2>Posts</h2>
     {% for post in posts %}
     <div id="post-container">
-        <a href="{% url 'user' post.user.username 1 %}">{{ post.user.username }}</a><br>
+        <a href="{% url 'user' post.user.username 1 %}" class="username-link">{{ post.user.username }}</a><br>
         {{ post.content }} <br>
         {{ post.timestamp }} <br>
-        {{ post.likes }} <br>
+        <button id="like-{{ post.id }}" onclick="toggle_like({{ post.id }})" class="like-btn">♥ {{ post.likes_users.count }}</button>
     </div>
     {% endfor %}
     <br>
@@ -35,3 +35,6 @@
 {% endblock %}
 
 
+{% block script %}
+    <script src="{% static 'network/index7.js' %}"></script>
+{% endblock %}

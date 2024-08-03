@@ -14,7 +14,9 @@ urlpatterns = [
     path("following/<int:page_num>", views.following, name="following"),
     path("all-posts/<int:page_num>", views.all_posts, name="all_posts"),
 
-     # API Routes
+    # API Routes
     path("posts", views.create, name="create"),
     path("posts/posts", views.posts, name="posts"),
+    path("posts/update/<int:post_id>", views.update, name="update"),
+    path("posts/likes/<int:post_id>", views.toggle_like, name="toggle_like"),
 ]
