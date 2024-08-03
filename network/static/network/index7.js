@@ -53,7 +53,6 @@ function load_view(view) {
 }
 
 function create_post(){
-    console.log("Loaded all posts");
     let content = document.querySelector('#post-body').value;
     fetch('/posts', {
     method: 'POST',
@@ -76,7 +75,6 @@ function edit_post(post_id){
 }
 
 function save_post(post_id){
-    console.log(post_id);
     //update content
     new_content = document.querySelector(`#textarea-${post_id}`).value;
     document.querySelector(`#content-${post_id}`).innerHTML = new_content;
@@ -111,12 +109,9 @@ function toggle_like(post_id){
     })
     .then(response => response.json())
     .then(result => {
-        console.log(result);
         if (result.message == 'like') {
-            console.log('Post liked');
             liking = true;
         } else if (result.message == 'unlike') {
-            console.log('Post unliked');
             liking = false;
         }
 

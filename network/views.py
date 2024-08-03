@@ -179,13 +179,8 @@ def user(request, username, page_num):
 
 def follow(request, user_id):
      # Finding followers based on the id
-    
     user_to_follow = User.objects.get(id=user_id)
-    print(user_to_follow)
-    print(user_to_follow.followers.filter(id=user_to_follow.id).exists())
     user_to_follow.followers.add(request.user)
-
-    print(user_to_follow.followers.filter(id=user_to_follow.id).exists())
     return redirect('user', user_to_follow.username, 1)
 
 def unfollow(request, user_id):
